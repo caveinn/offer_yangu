@@ -19,5 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/', include("offer_yangu.authentication.urls", namespace="authentication"))
+    path('api/', include("offer_yangu.authentication.urls", namespace="authentication")),
+    path('api/', include("offer_yangu.offers.urls", namespace="offers"))
+
 ]

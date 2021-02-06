@@ -27,7 +27,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         # Attempt decoding the token
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY)
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         except:
             raise AuthenticationFailed('Invalid token.')
 

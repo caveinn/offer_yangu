@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'rest_framework',
     'offer_yangu.authentication',
+    'offer_yangu.offers',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
