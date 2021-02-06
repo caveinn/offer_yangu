@@ -1,7 +1,7 @@
 # offer_yangu
 
 # Todo
- - Product 
+ - Product
     - Name of product
     - offer duration
     - stock
@@ -11,5 +11,5 @@
     - name of seller
     - prev and current
     - category
-    - status
+    - status 
 - Messages
