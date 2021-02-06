@@ -53,6 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     "Abstract user adds some fields required by django"
     username = models.CharField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(db_index=True, unique=True)
+    # phone_number = models.CharField(unique=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -100,5 +101,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         }
 
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-
-        return token.decode()
+        return token
