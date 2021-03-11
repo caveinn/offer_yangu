@@ -18,7 +18,7 @@ class UserManager(BaseUserManager):
     to create `User` objects.
     """
 
-    def create_user(self, username, email, password=None):
+    def create_user(self, username, email, phone_number, password=None):
         """Create and return a `User` with an email, username and password."""
         if username is None:
             raise TypeError('Users must have a username.')
@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
         if email is None:
             raise TypeError('Users must have an email address.')
 
-        user = self.model(username=username, email=self.normalize_email(email))
+        user = self.model(username=username, email=self.normalize_email(email), phone_number=phone_number)
         user.set_password(password)
         user.save()
 
@@ -40,8 +40,8 @@ class UserManager(BaseUserManager):
         """
         if password is None:
             raise TypeError('Superusers must have a password.')
-
-        user = self.create_user(username, email, password)
+        phone_number = input("PhoneNumber: ")
+        user = self.create_user(username, email,password=password,phone_number=phone_number)
         user.is_superuser = True
         user.is_staff = True
         user.save()
@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     "Abstract user adds some fields required by django"
     username = models.CharField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(db_index=True, unique=True)
-    # phone_number = models.CharField(unique=True)
+    phone_number = models.CharField(unique=True, max_length=20)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -61,6 +61,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
         }
     )
 
+    phone_number= serializers.CharField(required=True, validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message='This phone number is already used by another user',
+            )
+        ],)
     # The client should not be able to send a token along with a registration
     # request. Making `token` read-only handles that for us.
     token = serializers.CharField(read_only=True)
@@ -69,7 +75,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         # List all of the fields that could possibly be included in a request
         # or response, including fields specified explicitly above.
-        fields = ['email', 'username', 'password', 'token']
+        fields = ['email', 'username', 'password', 'token', "phone_number"]
 
     def create(self, validated_data):
         # Use the `create_user` method we wrote earlier to create a new user.
@@ -111,7 +117,7 @@ class LoginSerializer(serializers.Serializer):
         # for a user that matches this email/password combination. Notice how
         # we pass `email` as the `username` value. Remember that, in our User
         # model, we set `USERNAME_FIELD` as `email`.
-        user = authenticate(username="caveinncicad1@gmail.com", password="Sample@123")
+        user = authenticate(username=email, password=password)
 
         # If no user was found matching this email/password combination then
         # `authenticate` will return `None`. Raise an exception in this case.
