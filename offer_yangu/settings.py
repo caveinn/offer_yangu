@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '5j#+l8+py(^*u6qbmzwkl7$p58#iab*p+1g%ozaywi%m@j*he!'
+SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg2',
     'corsheaders',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +79,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'offer_yangu.wsgi.application'
 
+# Swagger documentation
+SWAGGER_SETTINGS = {
+    "DOC_EXPANSION": "none"
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -141,7 +147,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'authentication.User'
-CORS_ALLOW_ALL_ORIGINS= True
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 REST_FRAMEWORK = {
@@ -151,4 +157,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'offer_yangu.authentication.backends.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
+
+# Pagination
+PAGE_SIZE = int(os.getenv("PAGE_SIZE", 10))
+MAX_PAGE_SIZE = int(os.getenv("PAGE_SIZE", 200))
