@@ -1,0 +1,7 @@
+DB_NAME="your-value"
+DB_USERNANE="your-value"
+DB_PASSWORD="your-value"
+SECRET_KEY="your-value"
+DB_PORT=5432
+MAX_PAGE_SIZE=200
+PAGE_SIZE=10
