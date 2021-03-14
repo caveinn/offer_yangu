@@ -10,24 +10,27 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+from dotenv import load_dotenv, find_dotenv
 from pathlib import Path
-from .config import config
+# from .config import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
+# env_path = Path('..') / '.env'
+load_dotenv(find_dotenv())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '5j#+l8+py(^*u6qbmzwkl7$p58#iab*p+1g%ozaywi%m@j*he!'
+SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", False)
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", "backend.offeryangu.co.ke"]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
@@ -42,12 +45,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'drf_yasg2',
     'corsheaders',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -77,6 +84,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'offer_yangu.wsgi.application'
 
+# Swagger documentation
+SWAGGER_SETTINGS = {
+    "DOC_EXPANSION": "none"
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -87,15 +98,15 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': config("DB_NAME"),
+        'NAME': os.getenv("DB_NAME", ""),
 
-        'USER': config("DB_USERNANE"),
+        'USER': os.getenv("DB_USERNAME", ""),
 
-        'PASSWORD': config("DB_PASSWORD"),
+        'PASSWORD': os.getenv("DB_PASSWORD", ""),
 
-        'HOST': config("DB_HOST"),
+        'HOST': os.getenv("DB_HOST", "localhost"),
 
-        'PORT': config("DB_PORT"),
+        'PORT': os.getenv("DB_PORT", 5432),
 
     }
 
@@ -139,9 +150,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 AUTH_USER_MODEL = 'authentication.User'
-CORS_ALLOW_ALL_ORIGINS= True
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 REST_FRAMEWORK = {
@@ -151,4 +165,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'offer_yangu.authentication.backends.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
+
+# Pagination
+PAGE_SIZE = int(os.getenv("PAGE_SIZE", 10))
+MAX_PAGE_SIZE = int(os.getenv("PAGE_SIZE", 200))
