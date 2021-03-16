@@ -12,6 +12,8 @@ pyjwt = "*"
 psycopg2-binary = "*"
 pillow = "*"
 django-filter = "*"
+whitenoise = "*"
+python-dotenv = "*"
 
 [dev-packages]
 autopep8 = "*"
