@@ -1,5 +1,6 @@
 from .models import Offers, Category, Location
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 
 class CategoryField(serializers.Field):
@@ -7,7 +8,10 @@ class CategoryField(serializers.Field):
         return value.name
 
     def to_internal_value(self, data):
-        return Category.objects.get(id=int(data))
+        try:
+            return Category.objects.get(id=int(data))
+        except:
+            raise ValidationError("category is required")
 
 
 class LocationField(serializers.Field):
@@ -15,13 +19,16 @@ class LocationField(serializers.Field):
         return value.name
 
     def to_internal_value(self, data):
-        return Location.objects.get(id=int(data))
+        try:
+            return Location.objects.get(id=int(data))
+        except:
+            raise ValidationError("Location is required")
 
 
 class OffersSerializer(serializers.ModelSerializer):
     seller = serializers.SerializerMethodField(required=False)
     category = CategoryField()
-    location = CategoryField()
+    location = LocationField()
 
     class Meta:
         model = Offers
@@ -34,7 +41,8 @@ class OffersSerializer(serializers.ModelSerializer):
     def get_seller(self, obj):
         return {
             "username": obj.seller.username,
-            "email": obj.seller.email
+            "email": obj.seller.email,
+            "phone": obj.seller.phone_number
         }
 
 
