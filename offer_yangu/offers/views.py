@@ -23,7 +23,7 @@ class OffersViewset(ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_staff:
             return Offers.objects.all()
-        return Offers.objects.filter(approved=False)
+        return Offers.objects.filter(approved=True)
 
     @action(methods=['GET'], detail=False, url_name='Search offers')
     def get(self, request, *args, **kwargs):

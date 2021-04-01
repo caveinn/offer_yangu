@@ -28,7 +28,8 @@ load_dotenv(find_dotenv())
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", False)
+# DEBUG = os.getenv("DEBUG", False)
+DEBUG = True
 
 ALLOWED_HOSTS = ["*", "backend.offeryangu.co.ke"]
 MEDIA_URL = '/media/'
