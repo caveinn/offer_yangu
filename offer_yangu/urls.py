@@ -45,4 +45,4 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include("offer_yangu.authentication.urls", namespace="authentication")),
     path('api/', include("offer_yangu.offers.urls", namespace="offers"))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
