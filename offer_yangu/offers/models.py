@@ -28,3 +28,10 @@ class Category(models.Model):
 
 class Location(models.Model):
     name = models.CharField(max_length=255, unique=True)
+
+
+class OfferReview(models.Model):
+    content = models.TextField()
+    reviewer = models.ForeignKey(User,related_name="reviewer", on_delete=models.CASCADE)
+    reviewed_on = models.DateTimeField(auto_now=True)
+    offer = models.ForeignKey(Offers,on_delete=models.CASCADE, related_name="reviews")

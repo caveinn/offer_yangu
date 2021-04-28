@@ -1,4 +1,4 @@
-from .models import Offers, Category, Location
+from .models import Offers, Category, Location, OfferReview
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -24,7 +24,23 @@ class LocationField(serializers.Field):
         except:
             raise ValidationError("Location is required")
 
+class ReviewSerializer(serializers.ModelSerializer):
+    reviewer = serializers.SerializerMethodField(required=False)
+    class Meta:
+        model = OfferReview
+        fields = "__all__"
 
+    # def create(self, validated_data):
+    #     validated_data["reviewer"] = self.context.get("request").user
+    #     return super().create(validated_data)
+
+    def get_reviewer(self, obj):
+        return {
+            "username": obj.reviewer.username,
+            "email": obj.reviewer.email,
+            "phone": obj.reviewer.phone_number,
+            "joined": obj.reviewer.created_at,
+        }
 class OffersSerializer(serializers.ModelSerializer):
     seller = serializers.SerializerMethodField(required=False)
     category = CategoryField()
@@ -42,7 +58,8 @@ class OffersSerializer(serializers.ModelSerializer):
         return {
             "username": obj.seller.username,
             "email": obj.seller.email,
-            "phone": obj.seller.phone_number
+            "phone": obj.seller.phone_number,
+            "joined": obj.seller.created_at,
         }
 
 

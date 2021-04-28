@@ -22,6 +22,10 @@ from drf_yasg2.views import get_schema_view
 from drf_yasg2 import openapi
 from django.views.generic.base import RedirectView
 
+admin.site.site_header = "OfferYangu Admin"
+admin.site.site_title = "OfferYangu Admin Portal"
+admin.site.index_title = "Welcome to OfferYangu Admin Portal"
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Offer Yangu API",

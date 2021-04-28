@@ -1,13 +1,18 @@
 
-from .views import LocationsViewset, OffersViewset, CategoriesViewset
+from .views import LocationsViewset, OffersViewset, CategoriesViewset, ReviewListCreateView
 from rest_framework import routers
+from django.urls import path
 
 app_name = "offers"
 router = routers.SimpleRouter()
 router.register(r"offers", OffersViewset, basename="offers")
 router.register(r"offer_categories", CategoriesViewset, basename="category")
 router.register(r"locations", LocationsViewset, basename="location")
-urlpatterns = router.urls
+urlpatterns = [
+ path('offers/<id>/reviews/', ReviewListCreateView.as_view(),  name='offer_reviews'),
+] + router.urls
+
+
 # path('user/', UserRetrieveUpdateAPIView.as_view()),
 # path('verify/<str:token>', VerifyAPIView.as_view(), name='verify'),
 # path('users/email_sent', EmailSentAPIView.as_view(), name='email_password'),
