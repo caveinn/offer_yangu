@@ -37,6 +37,7 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+admin.site.site_url = 'https://development.offeryangu.co.ke/' 
 
 urlpatterns = [
     path('',  RedirectView.as_view(url='docs')),
